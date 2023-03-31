@@ -20,4 +20,9 @@ export class AuthController {
     registration(@Body() userDto: CreateUserDto) {
         return this.authService.registration(userDto);
     };
+
+    @Post('/logout')
+    logout(@Body() userDto: CreateUserDto) {
+        return this.authService.logout(userDto);
+    };
 }
