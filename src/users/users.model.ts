@@ -5,6 +5,7 @@ import { BelongsToMany } from "sequelize-typescript";
 import { UserRoles } from "src/roles/user-roles.model";
 import { Tokens } from "src/tokens/token.model";
 import { TextBlock } from "src/textblock/textblock.model";
+import { Profile } from "src/profile/profile.model";
 
 interface UserCreationAttrs {
     email: string;
@@ -39,6 +40,9 @@ export class User extends Model<User, UserCreationAttrs> {
 
     @HasOne(() => Tokens)
     tokens: Tokens[];
+
+    @HasOne(() => Profile)
+    profile: Profile[];
 
     @HasMany(() => TextBlock)
     textblock: TextBlock[];

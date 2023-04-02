@@ -7,6 +7,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Tokens } from '../tokens/token.model';
 import { TokenService } from '../tokens/token.service';
 import { TokenModule } from 'src/tokens/token.module';
+import { ProfileModule } from 'src/profile/profile.module';
 
 
 @Module({
@@ -22,7 +23,8 @@ import { TokenModule } from 'src/tokens/token.module';
 
     }),
 
-    TokenModule
+    TokenModule,
+    ProfileModule
   ],
   exports: [
     AuthService,

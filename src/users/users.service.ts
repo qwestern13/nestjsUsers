@@ -6,13 +6,15 @@ import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './users.model';
+import { ProfileService } from 'src/profile/profile.service';
 
 
 @Injectable()
 export class UsersService {
 
     constructor(@InjectModel(User) private userRepository: typeof User,
-                private roleService: RolesService) {}
+                private roleService: RolesService,
+                private profileService: ProfileService) {}
 
     async createUser(dto: CreateUserDto) {
         const user = await this.userRepository.create(dto);
@@ -51,5 +53,13 @@ export class UsersService {
         user.banReason = dto.banReason;
         await user.save();
         return user;
+    }
+
+    async deleteUser(id: number) {
+        const user = this.userRepository.findOne({where: {id: id}});
+        if(!user){
+            throw new HttpException(`Пользователь с id = ${id} не найден`, HttpStatus.NOT_FOUND);
+        }
+        const deluser = this.userRepository.destroy({where: {id: id}});
     }
 }

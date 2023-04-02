@@ -11,6 +11,9 @@ import { Tokens } from "./tokens/token.model";
 import { TextblockModule } from './textblock/textblock.module';
 import { TextBlock } from "./textblock/textblock.model";
 import { FileModule } from './file/file.module';
+import { ImageFile } from "./file/file.model";
+import { ProfileModule } from './profile/profile.module';
+import { Profile } from "./profile/profile.model";
 
 @Module({
     controllers: [],
@@ -26,14 +29,15 @@ import { FileModule } from './file/file.module';
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRESS_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [User, Role, UserRoles, Tokens, TextBlock],
+            models: [User, Role, UserRoles, Tokens, TextBlock, ImageFile, Profile],
             autoLoadModels: true
           }),
         UsersModule,
         RolesModule,
         AuthModule,
         TextblockModule,
-        FileModule
+        FileModule,
+        ProfileModule
 
     ]
 })

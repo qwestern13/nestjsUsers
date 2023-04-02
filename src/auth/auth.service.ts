@@ -3,13 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcryptjs';
-import { generate } from 'rxjs';
 import { User } from 'src/users/users.model';
-import jwt from 'jsonwebtoken';
 import { TokenService } from '../tokens/token.service';
-import { Tokens } from '../tokens/token.model';
-import { InjectModel } from '@nestjs/sequelize';
-import { CreateTokenDto } from 'src/tokens/dto/create-tokem.dto';
+import { ProfileService } from 'src/profile/profile.service';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +13,8 @@ export class AuthService {
     constructor(//@InjectModel(Tokens) private tokenRepository: typeof Tokens,
                 private userService: UsersService,
                 private jwtService: JwtService,
-                private tokenService: TokenService) {}
+                private tokenService: TokenService,
+                private profileService: ProfileService) {}
 
     async login(userDto: CreateUserDto) {
         const user = await this.validateUser(userDto);
@@ -40,6 +37,10 @@ export class AuthService {
         };
         const hashPassword = await bcrypt.hash(userDto.password, 5);
         const user = await this.userService.createUser({...userDto, password: hashPassword});
+        const payload = {id: user.id};
+        console.log(payload.id);
+        const profile = await this.profileService.createProfile(userDto);
+        await profile.$set('userid', payload.id);
         return this.generateToken(user);
     }
     
